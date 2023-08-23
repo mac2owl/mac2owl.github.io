@@ -5,6 +5,9 @@ def logged_in_user(function) -> Any:
 	@wraps(function)
 	def get_logged_in_user(*args, **kwargs):
 		current_user = get_valid_current_user()
+		if not current_user:
+			return reject_access()
+
 		return function(*args, **kwargs, current_user=current_user)
 
 	return get_logged_in_user

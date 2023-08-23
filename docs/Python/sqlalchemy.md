@@ -62,6 +62,7 @@ class QueryMixin:
 	def find_all_in(cls, **kwargs):
 		filters = [getattr(cls, attr).in_(kwargs[attr]) for attr in kwargs]
 		return db.session.execute(db.select(cls).where(*filters)).scalars().all()
+
 	@classmethod
 	def find_all_not_in(cls, **kwargs):
 		filters = [getattr(cls, attr).not_in(kwargs[attr]) for attr in kwargs]

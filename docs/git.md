@@ -1,3 +1,32 @@
+## Multi git accounts access
+
+If you work on different projects for different companies, or just want to separate company work from your own personal projects. You can use `includeIf` to tell git which identity/account to use depending on the directory path - for example, projects under `~/work/` folder are linked to the work account, `~/personal/` ones are linked to personal account
+
+First, in `~/.gitconfig` we do
+
+```
+[includeIf "gitdir:~/work/"]
+    path = .gitconfig-work
+[includeIf "gitdir:~/personal/"]
+    path = .gitconfig-personal
+```
+
+then edit/create (if haven't got one) `~/.gitconfig-personal` and add the git config of your personal account
+
+```
+[user]
+name = personalAccName
+email = personal-acc@email-address-here.com
+```
+
+do the same for `~/.gitconfig-work` but with your work account info
+
+```
+[user]
+name = workAccName
+email = work-acc@email-address-here.com
+```
+
 ## Add remote repo
 
 ```

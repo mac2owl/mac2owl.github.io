@@ -1,5 +1,11 @@
 ## Postgres
 
+### Tools
+
+Online playground: [DB Fiddle](https://www.db-fiddle.com/)  
+GUI tool: TablePlus  
+[Postgres.app (Mac)](https://postgresapp.com/)
+
 ### Enable uuid generation
 
 ```SQL
@@ -49,9 +55,74 @@ CREATE TABLE employees (
 );
 ```
 
+### Insert values to table
+
+```SQL
+INSERT INTO
+	departments(name)
+VALUES
+	('HR'),
+	('Finance');
+
+INSERT INTO
+	employees(email, first_name, last_name, department_id)
+VALUES
+	('mary@test_co.com', 'Mary', 'Smith', '56355b49-b2c2-4ac9-b8e8-d15eaeb57353'),
+	('dave@test_co.com', 'Dave', 'Cole', '56355b49-b2c2-4ac9-b8e8-d15eaeb57353'),
+	('jane@test_co.com', 'Jane', 'Hills', '56355b49-b2c2-4ac9-b8e8-d15eaeb57353'),
+	('john@test_co.com', 'John', 'Doe', 'ae39465d-88eb-4437-9970-12bfa94e7ed4');
+```
+
+### Simple audit table
+
+```SQL
+CREATE OR REPLACE FUNCTION employees_audit_func()
+	RETURNS TRIGGER
+	AS $employees_audit$
+BEGIN
+	if (TG_OP = 'UPDATE') THEN
+		INSERT INTO employees_audit
+		SELECT
+            uuid_generate_v4(),
+			'UPDATE',
+			now(),
+			NEW.*;
+	elsif (TG_OP = 'INSERT') THEN
+		INSERT INTO employees_audit
+		SELECT
+            uuid_generate_v4(),
+			'INSERT',
+			now(),
+			NEW.*;
+    elsif (TG_OP = 'DELETE') THEN
+		INSERT INTO employees_audit
+		SELECT
+            uuid_generate_v4(),
+			'DELETE',
+			now(),
+			OLD.*;
+	END IF;
+	RETURN NULL;
+END;
+$employees_audit$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER employees_audit_trigger
+	AFTER INSERT OR UPDATE OR DELETE ON employees FOR EACH ROW
+	EXECUTE PROCEDURE employees_audit_func();
+```
+
 ### updated_at timestamp trigger
 
 ```SQL
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TRIGGER set_timestamp_employees
 BEFORE UPDATE ON employees
 FOR EACH ROW
@@ -84,6 +155,67 @@ CREATE TABLE employees (
 ALTER TABLE employees ALTER employment_start_year TYPE INT
 USING employment_start_year::INTEGER;
 ```
+
+### Update values with unnest
+
+```SQL
+UPDATE
+	employees
+SET
+	email = data_table.email
+FROM (
+	SELECT
+		unnest(ARRAY ['Mary', 'John', 'Dawn']) AS first_name,
+		unnest(ARRAY ['Smith', 'Doe', 'Carter']) AS last_name) AS data_table
+WHERE
+	employees.email = data_table.email;
+```
+
+### JSON aggregation and functions
+
+```SQL
+SELECT
+	dept.name AS department,
+	jsonb_agg(
+		jsonb_build_object (
+			'employee_id', e.id,
+			'email', e.email,
+			'first_name', e.first_name,
+			'last_name', e.last_name
+		)
+	) AS department_staff
+FROM
+	employees e
+	JOIN departments dept ON e.department_id = dept.id
+GROUP BY
+	d.name, d.id;
+```
+
+Returns:
+
+| department | department_staff                                                                                                                                                                                                                                                                                                                                                                                      |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Finance    | [{"email": "dave@test_co.com", "last_name": "Cole", "first_name": "Dave", "employee_id": "b26339e1-af22-4752-852e-cb51f342bb10"}, {"email": "jane@test_co.com", "last_name": "Hills", "first_name": "Jane", "employee_id": "710b5de9-f248-49d8-9846-57b31ed143b2"}, {"email": "mary@test_co.com", "last_name": "Smith", "first_name": "Mary", "employee_id": "e2044159-0576-4a3a-9fe5-9af24bf66102"}] |
+| HR         | [{"email": "john@test_co.com", "last_name": "Doe", "first_name": "John", "employee_id": "bcdadb45-970e-4d87-8b8a-fab1ccfeddd4"}]                                                                                                                                                                                                                                                                      |
+
+```SQL
+SELECT
+	d.name,
+	jsonb_object_agg(e.email, (concat_ws(' ', e.first_name, e.last_name))) AS department_staff
+FROM
+	employees e
+	JOIN departments d ON e.department_id = d.id
+GROUP BY
+	d.name,
+	d.id;
+```
+
+Returns:
+
+| department | department_staff                                                                                      |
+| ---------- | ----------------------------------------------------------------------------------------------------- |
+| Finance    | {"dave@test_co.com": "Dave Cole", "jane@test_co.com": "Jane Hills", "mary@test_co.com": "Mary Smith"} |
+| HR         | {"john@test_co.com": "John Doe"}                                                                      |
 
 ### Get week number of a date
 
