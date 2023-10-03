@@ -132,6 +132,11 @@
                     </a>
                   </li>
                   <li class="md-nav__item">
+                    <a href="../airflow/" class="md-nav__link">
+                      Airflow
+                    </a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="../docker/" class="md-nav__link">
                       Docker
                     </a>
@@ -165,18 +170,27 @@
                           <a href="#run-via-docker-compose" class="md-nav__link">
                             Run via Docker compose
                           </a>
+                          <nav class="md-nav" aria-label="Run via Docker compose">
+                            <ul class="md-nav__list">
+                              <li class="md-nav__item">
+                                <a href="#populating-data-into-localstack-s3-on-docker-compose-up" class="md-nav__link">
+                                  Populating data into localstack S3 on docker compose up
+                                </a>
+                              </li>
+                            </ul>
+                          </nav>
                         </li>
                       </ul>
                     </nav>
                   </li>
                   <li class="md-nav__item md-nav__item--nested">
-                    <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
-                    <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+                    <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
+                    <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
                       Python
                       <span class="md-nav__icon md-icon"></span>
                     </label>
-                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-                      <label class="md-nav__title" for="__nav_6">
+                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+                      <label class="md-nav__title" for="__nav_7">
                         <span class="md-nav__icon md-icon"></span>
                         Python
                       </label>
@@ -227,6 +241,15 @@
                     <a href="#run-via-docker-compose" class="md-nav__link">
                       Run via Docker compose
                     </a>
+                    <nav class="md-nav" aria-label="Run via Docker compose">
+                      <ul class="md-nav__list">
+                        <li class="md-nav__item">
+                          <a href="#populating-data-into-localstack-s3-on-docker-compose-up" class="md-nav__link">
+                            Populating data into localstack S3 on docker compose up
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
                   </li>
                 </ul>
               </nav>
@@ -270,20 +293,61 @@
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span>volumes:
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">LOCALSTACK_VOLUME_DIR</span><span class="k">:-</span><span class="p">./volume</span><span class="si">}</span><span class="s2">:/var/lib/localstack&quot;</span>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;/var/run/docker.sock:/var/run/docker.sock&quot;</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;./.localstack:/docker-entrypoint-initaws.d&quot;</span>
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;./s3_data:/s3_data&quot;</span><span class="w"> </span>#<span class="w"> </span>location<span class="w"> </span>of<span class="w"> </span>files<span class="w"> </span>used<span class="w"> </span>to<span class="w"> </span>pre-populate<span class="w"> </span>the<span class="w"> </span>Localstack<span class="w"> </span>S3<span class="w"> </span>bucket
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">            </span>-<span class="w"> </span><span class="s2">&quot;./data:/tmp/localstack&quot;</span>
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span>healthcheck:
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">            </span>test:
-</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span>-<span class="w"> </span>CMD
-</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span>-<span class="w"> </span>bash
-</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span>-<span class="w"> </span>-c
-</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">        </span>-<span class="w"> </span>awslocal<span class="w"> </span>dynamodb<span class="w"> </span>list-tables
-</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">          </span><span class="o">&amp;&amp;</span><span class="w"> </span>awslocal<span class="w"> </span>s3<span class="w"> </span>ls
-</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">          </span><span class="o">&amp;&amp;</span><span class="w"> </span>awslocal<span class="w"> </span>sqs<span class="w"> </span>list-queues
-</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">            </span>interval:<span class="w"> </span>10s
-</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">            </span>timeout:<span class="w"> </span>5s
-</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">            </span>retries:<span class="w"> </span><span class="m">5</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">            </span>-<span class="w"> </span><span class="s2">&quot;./data:/tmp/localstack&quot;</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span>healthcheck:
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">            </span>test:
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span>-<span class="w"> </span>CMD
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span>-<span class="w"> </span>bash
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span>-<span class="w"> </span>-c
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span>-<span class="w"> </span>awslocal<span class="w"> </span>dynamodb<span class="w"> </span>list-tables
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">          </span><span class="o">&amp;&amp;</span><span class="w"> </span>awslocal<span class="w"> </span>s3<span class="w"> </span>ls
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">          </span><span class="o">&amp;&amp;</span><span class="w"> </span>awslocal<span class="w"> </span>sqs<span class="w"> </span>list-queues
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">            </span>interval:<span class="w"> </span>10s
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">            </span>timeout:<span class="w"> </span>5s
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">            </span>retries:<span class="w"> </span><span class="m">5</span>
+</span></code></pre>
+            </div>
+            <h3 id="populating-data-into-localstack-s3-on-docker-compose-up">Populating data into localstack S3 on
+              <code>docker compose up</code><a class="headerlink" href="#populating-data-into-localstack-s3-on-docker-compose-up"
+                title="Permanent link">&para;</a>
+            </h3>
+            <p>Add these two lines to the <code>volumes</code> in the <code>docker-compose.yml</code> (assuming the data/files we want to
+              upload to loaclstack S3 are in <code>s3_data</code> folder)</p>
+            <div class="language-text highlight">
+              <pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>      - &quot;./.localstack:/docker-entrypoint-initaws.d&quot;
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>      - &quot;./s3_data:/s3_data&quot; # location of files used to pre-populate the Localstack S3 bucket
+</span></code></pre>
+            </div>
+            <p>Then create <code>.localstack</code> directory, and inside this folder create a <code>bucket_policy.json</code> with the
+              following AWS policy:</p>
+            <div class="language-text highlight">
+              <pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>{
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    &quot;Version&quot;: &quot;2012-10-17&quot;,
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    &quot;Statement&quot;: [
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        {
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>            &quot;Sid&quot;: &quot;PublicReadGetObject&quot;,
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>            &quot;Effect&quot;: &quot;Allow&quot;,
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>            &quot;Principal&quot;: &quot;*&quot;,
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>            &quot;Action&quot;: &quot;s3:GetObject&quot;,
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>            &quot;Resource&quot;: &quot;arn:aws:s3:::mock-bucket/*&quot;
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        },
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        {
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>            &quot;Sid&quot;: &quot;PublicReadGetObject&quot;,
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>            &quot;Effect&quot;: &quot;Allow&quot;,
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>            &quot;Principal&quot;: &quot;*&quot;,
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>            &quot;Action&quot;: &quot;s3:GetObject&quot;,
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>            &quot;Resource&quot;: &quot;arn:aws:s3:::another-mock-bucket/*&quot;
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>        }
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    ]
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>}
+</span></code></pre>
+            </div>
+            <p>and create a shell script (e.g. <code>create_and_populate_bucket.sh</code>) with commands to create and upload/synchronise
+              the localstack S3 bucket with local data:</p>
+            <div class="language-text highlight">
+              <pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>awslocal s3api create-bucket --bucket mock-bucket
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>awslocal s3api put-bucket-policy --bucket mock-bucket --policy ./bucket_policy.json
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>awslocal s3 sync /s3_data s3://mock-bucket
 </span></code></pre>
             </div>
           </article>

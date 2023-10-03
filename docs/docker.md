@@ -41,18 +41,19 @@ services:
     image: postgres:15.2
     restart: always
     environment:
-			POSTGRES_USER: db_user
-			POSTGRES_PASSWORD: db_password
-			POSTGRES_DB: db_name
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_DB: db_name
     ports:
-			- "5432:5432"
+      - "5432:5432"
 ```
 
 Postgres in container to run with different port number:
 
 ```Docker
 ports:
-	- "5434:5434"
+  - "5434:5434"
+
 command: -p 5434
 ```
 
@@ -61,11 +62,11 @@ Healthcheck on postgres container:
 ```Docker
 postgres:
 	...
-	healthcheck:
-		test: ["CMD-SHELL", "pg_isready -U db_user -d db_name -p 5432"]
-		interval: 10s
-		timeout: 5s
-		retries: 5
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U db_user -d db_name -p 5432"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
 ```
 
 ### Flask
@@ -119,22 +120,7 @@ Flask + Postgres + Celery w/ Redis (Worker + Beat + Flower)
 version: "3.9"
 
 services:
-  postgres:
-    image: postgres:15.2
-    restart: always
-		build:
-      context: .
-    environment:
-			POSTGRES_USER: db_user
-			POSTGRES_PASSWORD: db_password
-			POSTGRES_DB: db_name
-    ports:
-			- "5432:5432"
-	redis:
-		image: redis:latest
-		ports:
-			- "5432:5432"
-	flask_app:
+  flask_app:
     build:
       context: .
     environment:
@@ -150,7 +136,25 @@ services:
     links:
       - postgres
       - redis
-	celery-worker:
+
+  postgres:
+    image: postgres:15.2
+    restart: always
+    build:
+      context: .
+    environment:
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_DB: db_name
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "5432:5432"
+
+  celery-worker:
     build:
       context: .
     hostname: worker
@@ -161,9 +165,10 @@ services:
     links:
       - redis
     depends_on:
-			- flask_app
+      - flask_app
       - redis
-	celery-beat:
+
+  celery-beat:
     build:
       context: .
     hostname: beat
@@ -174,9 +179,10 @@ services:
     links:
       - redis
     depends_on:
-			- flask_app
+      - flask_app
       - redis
-	celery-flower:
+
+  celery-flower:
     build:
       context: .
     hostname: flower
@@ -189,6 +195,6 @@ services:
     links:
       - redis
     depends_on:
-			- flask_app
+      - flask_app
       - redis
 ```

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="prev" href="..">
-  <link rel="next" href="../docker/">
+  <link rel="next" href="../airflow/">
   <link rel="icon" href="../assets/images/favicon.png">
   <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.6">
   <title>SQL - My Dev notes</title>
@@ -148,8 +148,8 @@
                           <nav class="md-nav" aria-label="Postgres">
                             <ul class="md-nav__list">
                               <li class="md-nav__item">
-                                <a href="#tools" class="md-nav__link">
-                                  Tools
+                                <a href="#tools-and-cheatsheet" class="md-nav__link">
+                                  Tools and cheatsheet
                                 </a>
                               </li>
                               <li class="md-nav__item">
@@ -224,6 +224,11 @@
                     </nav>
                   </li>
                   <li class="md-nav__item">
+                    <a href="../airflow/" class="md-nav__link">
+                      Airflow
+                    </a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="../docker/" class="md-nav__link">
                       Docker
                     </a>
@@ -239,13 +244,13 @@
                     </a>
                   </li>
                   <li class="md-nav__item md-nav__item--nested">
-                    <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
-                    <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+                    <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
+                    <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
                       Python
                       <span class="md-nav__icon md-icon"></span>
                     </label>
-                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-                      <label class="md-nav__title" for="__nav_6">
+                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+                      <label class="md-nav__title" for="__nav_7">
                         <span class="md-nav__icon md-icon"></span>
                         Python
                       </label>
@@ -294,8 +299,8 @@
                     <nav class="md-nav" aria-label="Postgres">
                       <ul class="md-nav__list">
                         <li class="md-nav__item">
-                          <a href="#tools" class="md-nav__link">
-                            Tools
+                          <a href="#tools-and-cheatsheet" class="md-nav__link">
+                            Tools and cheatsheet
                           </a>
                         </li>
                         <li class="md-nav__item">
@@ -375,10 +380,12 @@
           <article class="md-content__inner md-typeset">
             <h1>SQL</h1>
             <h2 id="postgres">Postgres<a class="headerlink" href="#postgres" title="Permanent link">&para;</a></h2>
-            <h3 id="tools">Tools<a class="headerlink" href="#tools" title="Permanent link">&para;</a></h3>
+            <h3 id="tools-and-cheatsheet">Tools and cheatsheet<a class="headerlink" href="#tools-and-cheatsheet"
+                title="Permanent link">&para;</a></h3>
             <p>Online playground: <a href="https://www.db-fiddle.com/">DB Fiddle</a><br />
               GUI tool: TablePlus<br />
-              <a href="https://postgresapp.com/">Postgres.app (Mac)</a>
+              <a href="https://postgresapp.com/">Postgres.app (Mac)</a><br />
+              <a href="https://www.postgresqltutorial.com/postgresql-cheat-sheet/">Cheatsheet</a>
             </p>
             <h3 id="enable-uuid-generation">Enable uuid generation<a class="headerlink" href="#enable-uuid-generation"
                 title="Permanent link">&para;</a></h3>
@@ -440,10 +447,10 @@
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="n">employees</span><span class="p">(</span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">department_id</span><span class="p">)</span>
 </span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">VALUES</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;mary@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Mary&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;56355b49-b2c2-4ac9-b8e8-d15eaeb57353&#39;</span><span class="p">),</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;dave@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Dave&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Cole&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;56355b49-b2c2-4ac9-b8e8-d15eaeb57353&#39;</span><span class="p">),</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;jane@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Hills&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;56355b49-b2c2-4ac9-b8e8-d15eaeb57353&#39;</span><span class="p">),</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;john@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;John&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Doe&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ae39465d-88eb-4437-9970-12bfa94e7ed4&#39;</span><span class="p">);</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;mary@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Mary&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Smith&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">departments</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Finance&#39;</span><span class="p">)),</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;dave@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Dave&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Cole&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">departments</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Finance&#39;</span><span class="p">)),</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;jane@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Hills&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">departments</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Finance&#39;</span><span class="p">)),</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="p">(</span><span class="s1">&#39;john@test_co.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;John&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Doe&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">departments</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;HR&#39;</span><span class="p">));</span>
 </span></code></pre>
             </div>
             <h3 id="simple-audit-table">Simple audit table<a class="headerlink" href="#simple-audit-table" title="Permanent link">&para;</a>

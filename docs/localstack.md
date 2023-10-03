@@ -34,8 +34,6 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./.localstack:/docker-entrypoint-initaws.d"
-      - "./s3_data:/s3_data" # location of files used to pre-populate the Localstack S3 bucket
 			- "./data:/tmp/localstack"
 		healthcheck:
 			test:
@@ -48,4 +46,45 @@ services:
 			interval: 10s
 			timeout: 5s
 			retries: 5
+```
+
+### Populating data into localstack S3 on `docker compose up`
+
+Add these two lines to the `volumes` in the `docker-compose.yml` (assuming the data/files we want to upload to loaclstack S3 are in `s3_data` folder)
+
+```
+      - "./.localstack:/docker-entrypoint-initaws.d"
+      - "./s3_data:/s3_data" # location of files used to pre-populate the Localstack S3 bucket
+```
+
+Then create `.localstack` directory, and inside this folder create a `bucket_policy.json` with the following AWS policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::mock-bucket/*"
+        },
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::another-mock-bucket/*"
+        }
+    ]
+}
+```
+
+and create a shell script (e.g. `create_and_populate_bucket.sh`) with commands to create and upload/synchronise the localstack S3 bucket with local data:
+
+```
+awslocal s3api create-bucket --bucket mock-bucket
+awslocal s3api put-bucket-policy --bucket mock-bucket --policy ./bucket_policy.json
+awslocal s3 sync /s3_data s3://mock-bucket
 ```

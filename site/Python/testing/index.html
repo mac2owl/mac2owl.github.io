@@ -131,6 +131,11 @@
                     </a>
                   </li>
                   <li class="md-nav__item">
+                    <a href="../../airflow/" class="md-nav__link">
+                      Airflow
+                    </a>
+                  </li>
+                  <li class="md-nav__item">
                     <a href="../../docker/" class="md-nav__link">
                       Docker
                     </a>
@@ -146,13 +151,13 @@
                     </a>
                   </li>
                   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-                    <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
-                    <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+                    <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+                    <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
                       Python
                       <span class="md-nav__icon md-icon"></span>
                     </label>
-                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
-                      <label class="md-nav__title" for="__nav_6">
+                    <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+                      <label class="md-nav__title" for="__nav_7">
                         <span class="md-nav__icon md-icon"></span>
                         Python
                       </label>
@@ -544,7 +549,7 @@
                 class="headerlink" href="#mock-results-of-repeatedmultiple-calls-to-the-same-method" title="Permanent link">&para;</a></h3>
             <p>For example, calling a method in a loop:</p>
             <div class="language-py highlight">
-              <pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span> <span class="nf">loopy_loop</span><span class="p">():</span>
+              <pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span> <span class="nf">loop_me</span><span class="p">():</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">do_something</span><span class="p">()</span>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -553,7 +558,7 @@
             <p>To mock the results of repeated <code>do_something</code> calls</p>
             <div class="language-py highlight">
               <pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;path.to.do_something&quot;</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)):</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>        <span class="n">loopy_loop</span><span class="p">()</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>        <span class="n">loop_me</span><span class="p">()</span>
 </span></code></pre>
             </div>
           </article>

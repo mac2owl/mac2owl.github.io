@@ -1,10 +1,11 @@
 ## Postgres
 
-### Tools
+### Tools and cheatsheet
 
 Online playground: [DB Fiddle](https://www.db-fiddle.com/)  
 GUI tool: TablePlus  
-[Postgres.app (Mac)](https://postgresapp.com/)
+[Postgres.app (Mac)](https://postgresapp.com/)  
+[Cheatsheet](https://www.postgresqltutorial.com/postgresql-cheat-sheet/)
 
 ### Enable uuid generation
 
@@ -67,10 +68,10 @@ VALUES
 INSERT INTO
 	employees(email, first_name, last_name, department_id)
 VALUES
-	('mary@test_co.com', 'Mary', 'Smith', '56355b49-b2c2-4ac9-b8e8-d15eaeb57353'),
-	('dave@test_co.com', 'Dave', 'Cole', '56355b49-b2c2-4ac9-b8e8-d15eaeb57353'),
-	('jane@test_co.com', 'Jane', 'Hills', '56355b49-b2c2-4ac9-b8e8-d15eaeb57353'),
-	('john@test_co.com', 'John', 'Doe', 'ae39465d-88eb-4437-9970-12bfa94e7ed4');
+	('mary@test_co.com', 'Mary', 'Smith', (SELECT id from departments WHERE name='Finance')),
+	('dave@test_co.com', 'Dave', 'Cole', (SELECT id from departments WHERE name='Finance')),
+	('jane@test_co.com', 'Jane', 'Hills', (SELECT id from departments WHERE name='Finance')),
+	('john@test_co.com', 'John', 'Doe', (SELECT id from departments WHERE name='HR'));
 ```
 
 ### Simple audit table

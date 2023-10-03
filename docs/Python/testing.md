@@ -246,7 +246,7 @@ Passing the actual method to `side_effect` will call the actual method instead o
 For example, calling a method in a loop:
 
 ```py
-def loopy_loop():
+def loop_me():
 	for i in range(3):
 		result = do_something()
 		print(result)
@@ -257,5 +257,5 @@ To mock the results of repeated `do_something` calls
 
 ```py
 	with patch("path.to.do_something", side_effect=(4, 5, 6)):
-		loopy_loop()
+		loop_me()
 ```
