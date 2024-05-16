@@ -1,3 +1,42 @@
+## Logging class
+
+```py
+import logging
+
+
+class Logger:
+    def __init__(self):
+			self._logger = None
+
+    def setup_logger(self):
+			logger = logging.getLogger("root")
+
+			if logger.handlers:
+				return logger
+
+			logger.setLevel(logging.INFO)
+			formatter = logging.Formatter("%(asctime)s %(levelname)s %(filename)s:%(lineno)d %(module)s %(funcName)s - %(message)s")
+			handler = logging.StreamHandler()
+			handler.setFormatter(formatter)
+			logger.addHandler(handler)
+
+			return logger
+
+    def get_logger(self):
+			if self._logger is None:
+				self._logger = self.setup_logger()
+
+			return self._logger
+```
+
+To use:
+
+```py
+from path.to.logger import Logger
+
+logger = Logger().get_logger()
+```
+
 ## Creating decorator
 
 ```py

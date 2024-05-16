@@ -74,7 +74,7 @@ postgres:
 `Dockerfile`
 
 ```Docker
-FROM 3.11.3-slim
+FROM python:3.11.3-slim
 
 RUN apt−get −y update
 RUN apt−get install −y pip3 build−essential
@@ -136,23 +136,32 @@ services:
     links:
       - postgres
       - redis
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   postgres:
     image: postgres:15.2
-    restart: always
-    build:
-      context: .
     environment:
       POSTGRES_USER: db_user
       POSTGRES_PASSWORD: db_password
       POSTGRES_DB: db_name
     ports:
       - "5432:5432"
+    healthcheck:
+      test:["CMD-SHELL", "pg_isready -U db_user -d db_name"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:latest
     ports:
-      - "5432:5432"
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
 
   celery-worker:
     build:
