@@ -55,6 +55,64 @@ const fetchExample = (url) => {
 };
 ```
 
+## Download blob/file with fetch
+
+```js
+const downloadFile = (fileUrl) => {
+  fetch(fileUrl, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((body) => {
+          // error handling
+          if (body.status == "error") {
+            return downloadErrorHandler();
+          }
+          throw new Error("HTTP status " + response.status);
+        });
+      }
+      return response.blob().then((blob) => {
+        filename = extractFilenameFromHeaders(response.headers);
+        return downloadBlob(blob, filename);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+const downloadBlob = (blob, filename) => {
+  const link = document.createElement("a");
+  link.href = window.URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  link.remove();
+};
+
+// Extract filename from headers
+const extractFilenameFromHeaders = (headers) => {
+  const header = headers.get("Content-Disposition");
+  const parts = header.split(";");
+  return parts[1].split("=")[1];
+};
+```
+
+## Open url on same tab
+
+```
+window.location.href = url;
+```
+
+## Open url on new tab
+
+```
+window.open(url, "_blank");
+```
+
 # Axios
 
-(Axios)[https://axios-http.com/]
+[Axios](https://axios-http.com/)

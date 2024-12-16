@@ -38,7 +38,7 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:15.2
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_USER: db_user
@@ -74,7 +74,7 @@ postgres:
 `Dockerfile`
 
 ```Docker
-FROM python:3.11.3-slim
+FROM python:3.13.1-slim
 
 RUN apt−get −y update
 RUN apt−get install −y pip3 build−essential
@@ -143,7 +143,7 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres:15.2
+    image: postgres:latest
     environment:
       POSTGRES_USER: db_user
       POSTGRES_PASSWORD: db_password

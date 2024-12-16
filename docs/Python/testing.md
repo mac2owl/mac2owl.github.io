@@ -3,59 +3,73 @@
 ### Testing endpoints
 
 ```py
-class TestClsNamePage:
-	def setup_method(self):
-		self.app = app.test_client()
-		self.app_context = app.app_context()
-		self.app_context.push()
+from path.to.app_factory import app # or create_app()
 
+@pytest.fixture
+def app(request):
+    project_app = _app # or create_app() factory
+    ctx = project_app.app_context()
+    ctx.push()
+
+    yield project_app
+
+    ctx.pop()
+
+
+@pytest.fixture()
+def test_client(app) -> Flask:
+    yield app.test_client()
+```
+
+```py
+class TestClsNamePage:
 	# Test get endpoint and assert content on page
-	def test_get_endpoint(self):
-		response = self.app.get("/")
+	def test_get_endpoint(self, test_client):
+		response = test_client.get("/")
 		assert response.status_code == 200
 
 		page_content = response.data.decode("utf-8")
 		assert "Hello!" in page_content
 
 	# Test endpoint with headers
-	def test_endponint_with_headers(self):
-		response = self.app.get("/", headers={"Auth-Token": "some-random-auth-token-values"})
+	def test_endponint_with_headers(self, test_client):
+		response = test_client.get("/", headers={"Auth-Token": "some-random-auth-token-values"})
 		assert response.status_code == 200
 
 	# Test get endpoint and content on page after redirect
-	def test_get_endpoint(self):
-		response = self.app.get("/redirect_to_another_page", follow_redirects=True)
+	def test_get_endpoint(self, test_client):
+		response = test_client.get("/redirect_to_another_page", follow_redirects=True)
 		assert response.status_code == 200
 
 		page_content = response.data.decode("utf-8")
 		assert "Redirected" in page_content
 
 	# Test get endpoint with JSON response
-	def test_get_endpoint(self):
+	def test_get_endpoint(self, test_client):
 		# assuming endpoint return {"message": "Hello!"}
-		response = self.app.get("/json_response")
+		response = test_client.get("/json_response")
 		assert response.status_code == 200
 
 		data = json.loads(response.data)
 		assert data["message"] == "Hello!"
 
 	# Test post endpoint - HTML form submission
-	def test_post_form_submit(self):
-		response = self.app.post("/users", data={"name": "user", "email": "user@test.com"})
+	def test_post_form_submit(self, test_client):
+		response = test_client.post("/users", data={"name": "user", "email": "user@test.com"})
 		assert response.status_code == 200
 
 	# Test post endpoint - HTML form submission with multi select
-	def test_post_multi_select_form_submit(self):
+	def test_post_multi_select_form_submit(self, test_client):
 		# Remember to import ImmutableMultiDict: `from werkzeug.datastructures import ImmutableMultiDict`
 		form = ImmutableMultiDict(
 			[("user_id", "user_id_1"), ("user_id", "user_id_2"), ("user_id", "user_id_2")]
 		)
-		response = self.app.post("/users/multi_select", data=form)
+		response = test_client.post("/users/multi_select", data=form)
 		assert response.status_code == 200
 
 	# Test post endpoint JSON params
-	def test_post_json_params(self):
-		response = self.app.post("/users", json={"name": "user", "email": "user@test.com"})
+	def test_post_json_params(self, test_client):
+		response = test_client.post("/users", json={"name": "user", "email": "user@test.com"})
 		assert response.status_code == 200
 ```
 
@@ -77,7 +91,7 @@ class TestClsName:
 
 ### Mock/patching
 
-** Mock method to return specific value **
+**Mock method to return specific value**
 
 ```py
 class TestClsName:
@@ -86,7 +100,7 @@ class TestClsName:
 			mocked_method.return_value = [1,2,3]
 ```
 
-** Mock method to raise exception **
+**Mock method to raise exception**
 
 ```py
 class TestClsName:
@@ -95,7 +109,7 @@ class TestClsName:
 			mocked_method.side_effect = Exception("error")
 ```
 
-** Mock response with JSON response, status_code **
+**Mock response with JSON response, status_code**
 
 ```py
 class MockResponse:
@@ -115,7 +129,7 @@ class TestClsName:
 
 ```
 
-** Mock response with raise_for_status **
+**Mock response with raise_for_status**
 
 ```py
 class TestClsName:
@@ -166,9 +180,34 @@ class TestS3Service:
 
 ```
 
-### Monkeypatching SQLAlchemy connection
+### Monkeypatching/Mocking SQLAlchemy connection
 
-** For SQLAlchemy 1.4 **
+**For SQLAlchemy 2**
+
+```py
+@pytest.fixture(autouse=True, scope="function")
+def db(app, request):
+    # https://github.com/pallets-eco/flask-sqlalchemy/issues/1171
+    with app.app_context():
+        engines = _db.engines
+
+    engine_cleanup = []
+    for key, engine in engines.items():
+        connection = engine.connect()
+        transaction = connection.begin_nested()
+        engines[key] = connection
+        engine_cleanup.append((key, engine, connection, transaction))
+
+    try:
+        yield _db
+    finally:
+        for key, engine, connection, transaction in engine_cleanup:
+            transaction.rollback()
+            connection.close()
+            engines[key] = engine
+```
+
+**For SQLAlchemy 1.4**
 
 ```py
 @pytest.fixture
@@ -258,4 +297,20 @@ To mock the results of repeated `do_something` calls
 ```py
 	with patch("path.to.do_something", side_effect=(4, 5, 6)):
 		loop_me()
+```
+
+### Mock property
+
+```py
+	class SomeClass:
+		@property
+		def property_x():
+			return something
+```
+
+```py
+from mock import PropertyMock, patch
+
+	with patch("path.to.python.SomeClass.property_x", new_callable=PropertyMock, return_value=some_value):
+		# do something
 ```

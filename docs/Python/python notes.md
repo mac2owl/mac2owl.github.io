@@ -58,6 +58,22 @@ def app_root_page(current_user):
   ...
 ```
 
+**Decorator with params**
+
+```py
+def some_decorator(val) -> Any:
+    def some_decorator_func(function) -> Any:
+        @wraps(function)
+        def wrapper(*args, **kwargs):
+						some_bool = val > 10
+						# do other stuff
+            return function(*args, **kwargs, some_bool=some_bool)
+
+        return wrapper
+
+    return some_decorator_func
+```
+
 ## creating batch from list
 
 ```py

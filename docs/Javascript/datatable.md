@@ -1,3 +1,5 @@
+## Reload table(s) with new data
+
 ```js
 const reloadDatableData = () => {
   const dataUrl = `/data-api-endpoint`;

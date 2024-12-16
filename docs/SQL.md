@@ -178,7 +178,7 @@ WHERE
 SELECT
 	dept.name AS department,
 	jsonb_agg(
-		jsonb_build_object (
+		DISTINCT jsonb_build_object (  -- DISTINCT to remove dupes
 			'employee_id', e.id,
 			'email', e.email,
 			'first_name', e.first_name,
