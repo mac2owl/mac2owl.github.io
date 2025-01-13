@@ -314,3 +314,14 @@ from mock import PropertyMock, patch
 	with patch("path.to.python.SomeClass.property_x", new_callable=PropertyMock, return_value=some_value):
 		# do something
 ```
+
+or
+
+```py
+from mock import PropertyMock, patch
+from app.domains.obj_cls import ObjCls
+
+	with patch.object(ObjCls, "attr_or_property_name", new_callable=PropertyMock) as mocked:
+		mocked.return_value = some_value
+		# do something
+```

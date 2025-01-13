@@ -356,3 +356,27 @@ FROM generate_series('2022-01-01','2022-01-02', INTERVAL '1 hour');
 ```SQL
 SELECT TO_CHAR(TIMESTAMP '2023-01-01 05:00:00', 'YYYY-MM-DD');
 ```
+
+### Postgres upsert (INSERT INTO...ON CONFLICT... DO NOTHING/UPDATE SET...)
+
+**DO NOTHING (`email` is unique)**
+
+```SQL
+INSERT INTO users (email, username, tel)
+VALUES
+	('user_one@email.com', 'i_am_user_one', '0123456789'),
+	('user_two@email.com', 'i_am_user_two', '9876543210')
+ON CONFLICT (email)
+DO NOTHING;
+```
+
+**DO UPDATE SET (`email` is unique)**
+
+```SQL
+INSERT INTO users (email, username, tel)
+VALUES
+	('user_one@email.com', 'i_am_user_one', '0123456789'),
+	('user_two@email.com', 'i_am_user_two', '9876543210')
+ON CONFLICT (name)
+DO UPDATE SET username = EXCLUDED.username, tel = EXCLUDED.tel;
+```
