@@ -6,6 +6,7 @@ Online playground: [DB Fiddle](https://www.db-fiddle.com/)
 GUI tool: TablePlus  
 [Postgres.app (Mac)](https://postgresapp.com/)  
 [Cheatsheet](https://www.postgresqltutorial.com/postgresql-cheat-sheet/)
+[PostgreSQL Wiki](https://wiki.postgresql.org/wiki/Main_Page)
 
 ### Enable uuid generation
 
@@ -110,6 +111,15 @@ LANGUAGE plpgsql;
 
 CREATE TRIGGER employees_audit_trigger
 	AFTER INSERT OR UPDATE OR DELETE ON employees FOR EACH ROW
+	EXECUTE PROCEDURE employees_audit_func();
+```
+
+or only tracking certain columns on update (e.g all columns except created_at and updated_at)
+
+```sql
+CREATE TRIGGER employees_audit_update_selective_trigger
+	AFTER UPDATE ON employees FOR EACH ROW
+	WHEN ( (to_jsonb(OLD.*) - 'updated_at' - 'created_at') IS DISTINCT FROM  (to_jsonb(NEW.*) - 'updated_at' - 'created_at') )
 	EXECUTE PROCEDURE employees_audit_func();
 ```
 
